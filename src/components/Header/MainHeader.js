@@ -14,8 +14,6 @@ export default function MainHeader() {
         <Link href={"/"} className={classes.logo}>
           <Image
             src={logoImg}
-            width={100}
-            height={100}
             alt="A plate with foods on it"
             className={classes.logoImage}
             priority
