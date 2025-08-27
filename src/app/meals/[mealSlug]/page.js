@@ -4,7 +4,11 @@ import Image from "next/image";
 import classes from "./page.module.css";
 import { notFound } from "next/navigation";
 
-async function FecthMealData({ slug }) {
+// This tells Next.js to cache the page and revalidate it at most every hour.
+// This will prevent re-fetching data on every visit for a pre-visited meal.
+// export const revalidate = 3600; // 1 hour
+
+async function FetchMealData({ slug }) {
   const mealData = await getMealbySlug(slug);
   if (!mealData) {
     return notFound();
@@ -41,7 +45,7 @@ export default async function MealDetailsPage({ params }) {
 
   return (
     <Suspense fallback={<p className={classes.loading}>Loading...</p>}>
-      <FecthMealData slug={param.mealSlug} />
+      <FetchMealData slug={param.mealSlug} />
     </Suspense>
   );
 }
