@@ -1,3 +1,89 @@
+"use client";
+
+import ImagePicker from "@/components/Meals/ImagePicker";
+import classes from "./page.module.css";
+import { shareMealAction } from "@/lib/actions";
+import FormSubmitButton from "@/components/Meals/FormSubmitButton";
+import { useActionState } from "react";
+
 export default function ShareMealPage() {
-  return <div>ShareMealPage</div>;
+  const [formState, formAction] = useActionState(shareMealAction, { data: {}, errors: [] });
+
+  return (
+    <>
+      <header className={classes.header}>
+        <h1>
+          Share your <span className={classes.highlight}>favorite meal</span>
+        </h1>
+        <p>Or any other meal you feel needs sharing!</p>
+      </header>
+      <main className={classes.main}>
+        <form className={classes.form} action={formAction}>
+          <div className={classes.row}>
+            <p>
+              <label htmlFor="name">Your name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                defaultValue={formState?.data?.name}
+                required
+              />
+            </p>
+            <p>
+              <label htmlFor="email">Your email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                defaultValue={formState?.data?.email}
+                required
+              />
+            </p>
+          </div>
+          <p>
+            <label htmlFor="title">Title</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              defaultValue={formState?.data?.title}
+              required
+            />
+          </p>
+          <p>
+            <label htmlFor="summary">Short Summary</label>
+            <input
+              type="text"
+              id="summary"
+              name="summary"
+              defaultValue={formState?.data?.summary}
+              required
+            />
+          </p>
+          <p>
+            <label htmlFor="instructions">Instructions</label>
+            <textarea
+              id="instructions"
+              name="instructions"
+              rows="10"
+              defaultValue={formState?.data?.instructions}
+              required
+            ></textarea>
+          </p>
+          <ImagePicker key={formState?.data?.image} label="Image" name="image" />
+          {formState.errors.length > 0 && (
+            <ul className={classes.errors}>
+              {formState.errors.map((error) => (
+                <li key={error}>{error}</li>
+              ))}
+            </ul>
+          )}
+          <p className={classes.actions}>
+            <FormSubmitButton />
+          </p>
+        </form>
+      </main>
+    </>
+  );
 }

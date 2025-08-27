@@ -8,6 +8,16 @@ import { notFound } from "next/navigation";
 // This will prevent re-fetching data on every visit for a pre-visited meal.
 // export const revalidate = 3600; // 1 hour
 
+export async function generateMetadata({ params }) {
+  const { mealSlug } = await params;
+  const mealData = await getMealbySlug(mealSlug);
+  if (!mealData) {
+    return notFound();
+  }
+
+  return { title: mealData.title, description: mealData.summary };
+}
+
 async function FetchMealData({ slug }) {
   const mealData = await getMealbySlug(slug);
   if (!mealData) {
